@@ -1,0 +1,70 @@
+.container {
+  height: calc(100vh - 100px);
+  background-color: #d1411e;
+  overflow: hidden;
+}
+.arrowcontainer{
+    position: absolute;
+    width: 10%;
+    height: 10%;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    cursor: pointer;
+    z-index: 5;
+    
+}
+
+.wrapper{
+    width: 300vw;
+    height: 100%;
+    display: flex;
+    transition: all 1.5s ease-in-out;
+    
+}
+.imgcontainer{
+width: 100vw;
+height: 100%;
+position: relative;
+display: flex;
+justify-content: space-evenly;
+align-items: center;
+}
+.info{
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+.info h2{
+    font-size: 50px;
+    font-family: 'Permanent Marker', cursive;
+    
+}
+.info h1{
+    font-size: 90px;
+    margin-top: -50px;
+    font-family: 'Permanent Marker', cursive;
+    
+}
+.order{
+    margin-top: -50px;
+    padding: 5px 10px;
+    background: transparent;
+    outline: none;
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+    font-family: 'Baloo Bhai 2', cursive;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    cursor: pointer;
+    transition: all .5s ease-in-out;
+}
+.order:hover{
+    transform: scale(1.1);
+}
+
