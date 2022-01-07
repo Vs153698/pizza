@@ -1,0 +1,105 @@
+.container{
+    padding: 50px;
+    font-family: 'Baloo Bhai 2', cursive;
+    display:flex;  
+}
+.left{
+    flex: 2;
+
+}
+.right{
+    flex: 1;
+}
+.imgcontainer{
+    width: 100px;
+    height: 100px;
+    position: relative;
+}
+.table{
+    width: 100%;
+    border-spacing: 20px;
+}
+.name{
+    font-weight: 500;
+    color: #d1411e;
+    font-size: 18px;
+    font-family: 'Permanent Marker', cursive;
+}
+.total{
+    font-weight: 500;
+    font-size: 18px;
+}
+.wrapper{
+    width: 90%;
+    min-height: 300px;
+    background-color: #333;
+    padding: 50px;
+    padding-top: 10px;
+    display:flex;
+    justify-content:space-between;
+    flex-direction:column;
+    color: white;
+}
+.totalTextTitle{
+    margin-right: 10px;
+}
+.btn{
+    height: 30px;
+    color: #d1411e;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+
+}
+.quantity{
+    padding-left: 25px;
+}
+@media screen and (max-width:800px ) {
+    .container{
+        flex-direction: column;
+        padding: 20px;
+    }
+    .table{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .trtitle{
+        display: none;
+    }
+    .tr{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .name,.total{
+        font-size: 24px;
+    }
+    .imgcontainer{
+        width: 35vw;
+        height: 35vw;
+    }
+    .extras,.price,.quantity{
+        font-size: 22px;
+    }
+    .price::before{
+        content: "Price: ";
+        font-weight: 600;
+    }
+    .quantity::before{
+        content: "Quantity: ";
+        font-weight: 600;
+    }
+    .total::before{
+        content: "Total: ";
+        font-weight: 600;
+    }
+    .wrapper{
+        width: 100%;
+    }
+    
+    
+}

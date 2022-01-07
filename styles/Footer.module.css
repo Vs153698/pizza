@@ -1,0 +1,51 @@
+.container {
+  height: calc(100vh - 100px);
+  background-color: #222;
+  display: flex;
+  font-family: 'Baloo Bhai 2', cursive;
+}
+.item {
+    flex: 1;
+    position: relative;
+    display: flex;
+}
+.item:last-child{
+    flex: 2;
+    padding: 50px;
+    justify-content: space-between;
+}
+.card{
+    flex: 1;
+    padding: 0 20px;
+}
+.title{
+    font-size: 18px;
+    color: #b7903c;
+}
+.text{
+    color: lightgrey;
+}
+.motto{
+    font-family: 'Permanent Marker', cursive;
+    color: rgb(211, 211, 211);
+}
+@media screen and (max-width:800px ) {
+    .item:first-child{
+        display: none;
+    }
+    .item:last-child{
+        flex-direction: column;
+    
+    }
+    .container{
+        height: auto;
+        text-align: center;
+    }
+    .title{
+        font-size: 26px;
+    }
+    .text{
+        font-size: 20px;
+    }
+    
+}

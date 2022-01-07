@@ -22,3 +22,13 @@
     flex-wrap: wrap;
     width: 100%;
 }
+@media screen and (max-width:800px ) {
+    .title{
+        text-align: center;
+    }
+    .desc{
+        width: 90%;
+        text-align: center;
+    }
+    
+}

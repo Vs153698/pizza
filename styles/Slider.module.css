@@ -2,6 +2,7 @@
   height: calc(100vh - 100px);
   background-color: #d1411e;
   overflow: hidden;
+  position: relative;
 }
 .arrowcontainer{
     position: absolute;
@@ -66,5 +67,14 @@ align-items: center;
 }
 .order:hover{
     transform: scale(1.1);
+}
+@media screen and (max-width:800px ) {
+    .container{
+        height: 50vh;
+    }
+    .info{
+        display: none;
+    }
+    
 }
 
