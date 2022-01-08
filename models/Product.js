@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')    
-const Productchema = mongoose.Schema({
+const Productschema = mongoose.Schema({
     title : {
         type : String,
         required:true,
@@ -23,4 +23,5 @@ const Productchema = mongoose.Schema({
         required:true,
     },
 },{timestamps:true})
-export default  mongoose.model( 'Productchema' , Productchema)
+// we have to use below method because next js always try to create new model when page is loaded
+module.exports= mongoose.models.pizza || mongoose.model('pizza' , Productschema)
