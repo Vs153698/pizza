@@ -51,15 +51,18 @@
 .listitem{
     margin: 20px;
     font-weight: 500;
+    cursor: pointer;
 }
 .mainlogo{
     padding: 0px 15px;
     font-weight: 500;
     font-size: 45px;
     font-family: 'Permanent Marker', cursive;
+    cursor: pointer;
 }
 .cart{
-    position: relative;
+    position: relative; 
+    cursor: pointer;
 }
 .counter{
     position: absolute;

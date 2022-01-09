@@ -2,12 +2,15 @@ import axios from 'axios';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addproduct } from '../../Redux/cartSlice';
 import styles from './../../styles/ProductDetail.module.css'
-const ProductDetail = ({pizza}) => {
+const ProductDetail = ({ pizza }) => {
     const [size, setSize] = useState(0)
     const [price, setPrice] = useState(pizza.prices[0])
     const [extras, setExtras] = useState([])
     const [quantity, setQuantity] = useState(1)
+    const dispatch = useDispatch()
     // const pizza = {
     //     id: 1,
     //     img: "/img/p1.png",
@@ -15,23 +18,26 @@ const ProductDetail = ({pizza}) => {
     //     price: [19.9, 23.9, 27.9],
     //     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsa repellendus repellat sequi amet temporibus quos."
     // }
-    const changeprice = (number)=>{
+    const changeprice = (number) => {
         setPrice(price + number)
     }
-    const handlesize = (sizeIndex)=>{
+    const handlesize = (sizeIndex) => {
         const differences = pizza.prices[sizeIndex] - pizza.prices[size]
         setSize(sizeIndex)
         changeprice(differences)
     }
-    const handleChange=(e,option)=>{
+    const handleChange = (e, option) => {
         const checked = e.target.checked;
         if (checked) {
-            changeprice(option.price) 
-            setExtras([...extras,option])
-        }else{
+            changeprice(option.price)
+            setExtras([...extras, option])
+        } else {
             changeprice(-option.price)
-            setExtras(extras.filter((extra)=>extra._id !== option._id))
+            setExtras(extras.filter((extra) => extra._id !== option._id))
         }
+    }
+    const handlecart = ()=>{
+        dispatch(addproduct({...pizza,extras,price,quantity}))
     }
     return (
         <>
@@ -66,16 +72,16 @@ const ProductDetail = ({pizza}) => {
                     </div>
                     <h3 className={styles.choose}>Choose additional ingredients</h3>
                     <div className={styles.ingredients}>
-                    {pizza.extrasOptions.map((p,index)=>(
-                        <div className={styles.option} key={index}>
-                            <input type="checkbox" max={5} onChange={(e)=>{setQuantity(e.taraget.value)}} value={quantity} name={p.text} id={p.text} className={styles.checkbox} onChange={(e)=>handleChange(e,p)} />
-                            <label htmlFor={p.text}>{p.text}</label>
-                        </div>
-                    ))}
+                        {pizza.extrasOptions.map((p, index) => (
+                            <div className={styles.option} key={index}>
+                                <input type="checkbox" max={5}  name={p.text} id={p.text} className={styles.checkbox} onChange={(e) => handleChange(e, p)} />
+                                <label htmlFor={p.text}>{p.text}</label>
+                            </div>
+                        ))}
                     </div>
                     <div className={styles.add}>
-                        <input type="number" defaultValue={1} className={styles.quantity} min={1} />
-                        <button className={styles.button}>Add to Cart</button>
+                        <input type="number" onChange={(e) => { setQuantity(e.target.value) }} value={quantity} defaultValue={1} className={styles.quantity} min={1} />
+                        <button onClick={handlecart} className={styles.button}>Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -84,12 +90,12 @@ const ProductDetail = ({pizza}) => {
 }
 
 export default ProductDetail;
-export const getServerSideProps = async ({params}) => {
+export const getServerSideProps = async ({ params }) => {
 
     const data = await axios.get(`http://localhost:3000/api/products/${params.id}`)
     return {
-      props:{
-        pizza:data.data
-      }
+        props: {
+            pizza: data.data
+        }
     }
 }
