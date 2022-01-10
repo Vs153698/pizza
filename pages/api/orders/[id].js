@@ -12,8 +12,15 @@ const handler = async(req,res)=>{
             res.status(500).send(error)
         }
     }
-    if (method === "POST") {
-        
+    if (method === "PUT") {
+        try {
+            const orderupdate = await Order.findByIdAndUpdate(id,req.body,{new:true})
+            res.status(201).send(orderupdate)
+            
+        } catch (error) {
+            res.status(500).send(error)
+            
+        }
     }
     if (method === "DELETE") {
         

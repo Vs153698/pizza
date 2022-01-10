@@ -16,7 +16,7 @@ const OrderDetail = ({total,createOrder}) => {
                 </div>
                 <div className={styles.item}>
                     <label htmlFor="phone" className={styles.label}>Phone Number</label>
-                    <input type="text" id='phone' placeholder='+222 555 888' onChange={(e)=>setCustomer(e.target.value)} className={styles.input} />
+                    <input type="text" id='phone' placeholder='+222 555 888'  className={styles.input} />
                 </div>
                 <div className={styles.item}>
                     <label htmlFor="add" className={styles.label}>Address</label>
