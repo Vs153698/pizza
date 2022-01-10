@@ -97,6 +97,16 @@ const admin = ({orderhello,pizzahello}) => {
 
 export default admin;
 export const getServerSideProps = async (ctx) => {
+    const mycookie = ctx.req?.cookies || "";
+    if (mycookie.token !== process.env.TOKEN) {
+        return{
+            redirect:{
+                destination:"/admin/login",
+                permanent:false
+
+            }
+        }
+    }
     const productList = await axios.get('http://localhost:3000/api/products')
     const orderList = await axios.get('http://localhost:3000/api/orders')
     return {

@@ -1,9 +1,13 @@
 import axios from 'axios'
 import Head from 'next/head'
+import { useState } from 'react'
+import Add from '../components/Add'
+import AddButton from '../components/AddButton'
 import PizzaList from '../components/PizzaList'
 import Slider from '../components/Slider'
 
-export default function Home({pizza}) {
+export default function Home({pizza,admin}) {
+  const [open, setOpen] = useState(false)
   return (
     <div>
       <Head>
@@ -13,15 +17,23 @@ export default function Home({pizza}) {
         <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500&family=Lobster&family=Pacifico&family=Permanent+Marker&display=swap" rel="stylesheet"/>
       </Head>
       <Slider/>
+      {admin && <AddButton setOpen={setOpen}/>}
+      {open && <Add setOpen={setOpen}/> }
       <PizzaList pizza={pizza}/>
     </div>
   )
 }
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (ctx) => {
+  const mycookie = ctx.req?.cookies || ""
+  let admin = false
+  if (mycookie.token === process.env.TOKEN) {
+    admin = true;
+  }
   const data = await axios.get('http://localhost:3000/api/products')
   return {
     props:{
-      pizza:data.data
+      pizza:data.data,
+      admin
     }
   }
 }
