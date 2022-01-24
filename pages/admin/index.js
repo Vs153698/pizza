@@ -2,29 +2,42 @@ import Image from 'next/image';
 import Head from 'next/head';
 import styles from '../../styles/admin.module.css'
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../../Context/AuthContext';
+import { useRouter } from 'next/router';
 const admin = ({orderhello,pizzahello}) => {
+    console.log(orderhello,pizzahello);
+    const Router = useRouter()
+    const {currentuser} = useAuth()
+    useEffect(() => {
+        if(!currentuser) Router.push('/auth/Login')
+       
+    }, [currentuser])
     const [pizza, setPizza] = useState(pizzahello)
     const [order, setOrder] = useState(orderhello)
+    
+    
     const status = ['Paid','Preparing','On the way','Delivered','Closed']
     const handleDelete =async(id)=>{
         try {
-            const res = await axios.delete("http://localhost:3000/api/products/"+id)
-            setPizza(pizza.filter((p)=>p._id !== id))
+            const res = await axios.delete("http://localhost:4000/"+id)
+            setPizza(pizza.filter((p)=>p.id !== id))
         } catch (error) {
             console.log(error)
         }
     }
      
-    const handleStatus = async(id,status)=>{
+    const handleStatus = async(id1,status)=>{
         if (status >2 ) {
             status = 2
         }
         try {
-           const res = await axios.put("http://localhost:3000/api/orders/"+id,{status:parseInt(status) + 1}) 
+           const res = await axios.put("http://localhost:4000/order/"+id1,{status:parseInt(status) + 1}) 
+           console.log(order.filter((o)=>o.id !== id1));
            setOrder([
-               res.data,...order.filter((o)=>o._id !== id)
+               res.data,...order.filter((o)=>o.id !== id1)
            ])
+           console.log(order);
         } catch (error) {
             console.log(error);
         }
@@ -49,9 +62,9 @@ const admin = ({orderhello,pizzahello}) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {pizza.map((p)=>(<tr key={p._id} className={styles.trtitle}>
+                        {pizza.map((p)=>(<tr key={p.id} className={styles.trtitle}>
                             <td><Image src={p.img} width={50} height={50} objectFit='cover'/></td>
-                            <td>{p._id.slice(0,6)}...</td>
+                            <td>{p.id.slice(0,6)}...</td>
                             <td>{p.title}</td>
                             <td>${p.prices[0]}</td>
                             <td>
@@ -77,13 +90,13 @@ const admin = ({orderhello,pizzahello}) => {
                     </thead>
                     <tbody>
                        {order.map((o)=>(
-                                    <tr key={o._id} className={styles.trtitle}>
-                                    <td>{o._id}</td>
+                                    <tr key={o.id} className={styles.trtitle}>
+                                    <td>{o.id}</td>
                                     <td>{o.customer}</td>
                                     <td>${o.total}</td>
                                     <td>{o.method === 0 ? (<span>cash</span>):(<span>paid</span>)}</td>
                                     <td>{status[parseInt(o.status) + 1]}</td>
-                                    <td><button onClick={()=>handleStatus(o._id,o.status)} disabled={o.status >= 3 ? true : false} className={styles.btn}>Next Stage</button></td>
+                                    <td><button onClick={()=>handleStatus(o.id,o.status)} disabled={o.status >= 3 ? true : false} className={styles.btn}>Next Stage</button></td>
                                     
                                 </tr>
                        )) }
@@ -97,18 +110,9 @@ const admin = ({orderhello,pizzahello}) => {
 
 export default admin;
 export const getServerSideProps = async (ctx) => {
-    const mycookie = ctx.req?.cookies || "";
-    if (mycookie.token !== process.env.TOKEN) {
-        return{
-            redirect:{
-                destination:"/admin/login",
-                permanent:false
-
-            }
-        }
-    }
-    const productList = await axios.get('http://localhost:3000/api/products')
-    const orderList = await axios.get('http://localhost:3000/api/orders')
+    
+    const productList = await axios.get('http://localhost:4000/')
+    const orderList = await axios.get('http://localhost:4000/orders')
     return {
         props:{
             orderhello:orderList.data,

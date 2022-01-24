@@ -1,10 +1,10 @@
-import { Provider } from 'react-redux'
 import Layout from '../components/Layout'
-import store from '../Redux/store'
+import { AuthProvider } from '../Context/AuthContext'
 import '../styles/globals.css'
 function MyApp({ Component, pageProps }) {
-
-  return <Provider store={store}><Layout><Component {...pageProps} /></Layout></Provider>
+  return (
+  <AuthProvider><Layout><Component {...pageProps} /></Layout></AuthProvider>
+  )
 }
 
 export default MyApp

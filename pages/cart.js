@@ -1,7 +1,5 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 import styles from './../styles/cart.module.css'
 import { useEffect, useState } from "react";
 import {
@@ -13,23 +11,23 @@ import { useRouter } from "next/router";
 import { reset } from '../Redux/cartSlice';
 import axios from 'axios';
 import OrderDetail from '../components/OrderDetail';
+import { useAuth } from '../Context/AuthContext';
 const cart = () => {
-    const dispatch = useDispatch()
-    const quantity = useSelector(state => state.cart.quantity)
-    const cart = useSelector(state => state.cart)
+    const {quantity,products,total,resetcart} = useAuth()
+    const cart = products
     const [open, setOpen] = useState(false);
     const [cash, setCash] = useState(false);
-    const amount = cart.total;
+    const amount = total;
     const currency = "USD";
     const style = { layout: "vertical" };
     const router = useRouter();
     const createOrder = async (data) => {
         try {
-            const res = await axios.post("http://localhost:3000/api/orders", data);
-            console.log("payment data",res)
+            const res = await axios.post("http://localhost:4000/order", data);
             if (res.status === 201) {
-                dispatch(reset());
-                router.push(`/orders/${res.data._id}`);
+                setOpen(false)
+                resetcart()
+                router.push(`/orders/${res.data.id}`);
             }
         } catch (err) {
             console.log(err);
@@ -84,7 +82,7 @@ const cart = () => {
                             createOrder({
                                 customer: shipping.name.full_name,
                                 address: shipping.address.address_line_1,
-                                total: cart.total,
+                                total: amount,
                                 method: 1,
                             });
                         });
@@ -110,7 +108,7 @@ const cart = () => {
                             <th>Quantity</th>
                             <th>Total</th>
                         </tr>
-                        {cart.products.map((prod) => (<tr key={prod._id} className={styles.tr}>
+                        {cart.map((prod) => (<tr key={prod._id} className={styles.tr}>
                             <td >
                                 <div className={styles.imgcontainer}>
                                     <Image src={prod.img} layout='fill' objectFit='cover' alt="" />
@@ -142,13 +140,13 @@ const cart = () => {
                     <div className={styles.wrapper}>
                         <h2 className={styles.title}>CART TOTAL</h2>
                         <div className={styles.totalText}>
-                            <b className={styles.totalTextTitle}>Subtotal:</b>${cart.total}
+                            <b className={styles.totalTextTitle}>Subtotal:</b>${total}
                         </div>
                         <div className={styles.totalText}>
                             <b className={styles.totalTextTitle}>Discount:</b>$0.00
                         </div>
                         <div className={styles.totalText}>
-                            <b className={styles.totalTextTitle}>Total:</b>${cart.total}
+                            <b className={styles.totalTextTitle}>Total:</b>${total}
                         </div>
                         {open ? (
                             <div className={styles.paymentMethods}>
@@ -176,7 +174,7 @@ const cart = () => {
                         )}
                     </div>
                 </div>
-                {cash && <OrderDetail total={cart.total} createOrder={createOrder} />}
+                {cash && <OrderDetail total={total} createOrder={createOrder} />}
             </div>
         </>
     );

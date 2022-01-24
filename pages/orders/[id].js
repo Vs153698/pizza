@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styles from './../../styles/Orders.module.css'
 const order = ({pizza}) => {
+    console.log("hello",pizza);
     const status = pizza.status;
     const statusclass = (index) => {
         if (index - status < 1) {
@@ -34,7 +35,7 @@ const order = ({pizza}) => {
                             </tr>
                             <tr className={styles.tr}>
                                 <td>
-                                    <span className={styles.id}>{pizza._id}</span>
+                                    <span className={styles.id}>{pizza.id}</span>
                                 </td>
                                 <td>
                                     <span className={styles.name}>
@@ -85,13 +86,13 @@ const order = ({pizza}) => {
                     <div className={styles.wrapper}>
                         <h2 className={styles.title}>ORDER SUMMARY</h2>
                         <div className={styles.totalText}>
-                            <b className={styles.totalTextTitle}>Subtotal:</b>$79.60
+                            <b className={styles.totalTextTitle}>Subtotal:</b>${pizza.total}
                         </div>
                         <div className={styles.totalText}>
                             <b className={styles.totalTextTitle}>Discount:</b>$0.00
                         </div>
                         <div className={styles.totalText}>
-                            <b className={styles.totalTextTitle}>Total:</b>$79.60
+                            <b className={styles.totalTextTitle}>Total:</b>${pizza.total}
                         </div>
                         <button disabled className={styles.btn}>PAID</button>
                     </div>
@@ -103,8 +104,9 @@ const order = ({pizza}) => {
 
 export default order;
 export const getServerSideProps = async ({ params }) => {
-
-    const data = await axios.get(`http://localhost:3000/api/orders/${params.id}`)
+    console.log("id is",params.id);
+    const data = await axios.get(`http://localhost:4000/order/${params.id}`)
+    console.log("fetch data",data);
     return {
         props: {
             pizza: data.data

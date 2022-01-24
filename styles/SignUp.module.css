@@ -1,0 +1,11 @@
+.maincard{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px);
+}
+.social{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}

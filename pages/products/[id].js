@@ -2,22 +2,14 @@ import axios from 'axios';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addproduct } from '../../Redux/cartSlice';
 import styles from './../../styles/ProductDetail.module.css'
+import {useAuth} from '../../Context/AuthContext'
 const ProductDetail = ({ pizza }) => {
+    const {addproduct} = useAuth()
     const [size, setSize] = useState(0)
     const [price, setPrice] = useState(pizza.prices[0])
     const [extras, setExtras] = useState([])
     const [quantity, setQuantity] = useState(1)
-    const dispatch = useDispatch()
-    // const pizza = {
-    //     id: 1,
-    //     img: "/img/p1.png",
-    //     name: "CAMPAGNOLA",
-    //     price: [19.9, 23.9, 27.9],
-    //     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem ipsa repellendus repellat sequi amet temporibus quos."
-    // }
     const changeprice = (number) => {
         setPrice(price + number)
     }
@@ -37,7 +29,7 @@ const ProductDetail = ({ pizza }) => {
         }
     }
     const handlecart = ()=>{
-        dispatch(addproduct({...pizza,extras,price,quantity}))
+        addproduct({...pizza,extras,price,quantity})
     }
     return (
         <>
@@ -92,7 +84,7 @@ const ProductDetail = ({ pizza }) => {
 export default ProductDetail;
 export const getServerSideProps = async ({ params }) => {
 
-    const data = await axios.get(`http://localhost:3000/api/products/${params.id}`)
+    const data = await axios.get(`http://localhost:4000/${params.id}`)
     return {
         props: {
             pizza: data.data

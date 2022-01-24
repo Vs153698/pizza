@@ -1,7 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./cartSlice";
+import firebaseSlice from "./firebaseSlice";
+
 export default configureStore({
-    reducer:{
-        cart:cartReducer
+    reducer: {
+        user: firebaseSlice,
+        cart: cartReducer
+
     }
 })
